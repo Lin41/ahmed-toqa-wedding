@@ -399,40 +399,45 @@
   .on-paper .btn.rose:hover{background:var(--rose-lo);}
 
   /* ---------- Personal invitation pass ---------- */
-  .pass-wrap{position:relative;width:min(370px,100%);max-height:92vh;overflow-y:auto;display:flex;flex-direction:column;align-items:center;gap:14px;padding:6px 2px 10px;perspective:1000px;}
+  #pass-modal{align-items:flex-start;overflow-y:auto;padding:max(14px, env(safe-area-inset-top,0px)) 16px max(16px, env(safe-area-inset-bottom,0px));}
+  .pass-wrap{position:relative;width:min(350px,100%);margin:auto;display:flex;flex-direction:column;align-items:center;gap:10px;perspective:1000px;}
+  .pass-bar{align-self:stretch;display:flex;justify-content:flex-end;}
+  .pass-x{width:36px;height:36px;border-radius:50%;color:var(--ivory);font-size:22px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
   .pass{width:100%;flex-shrink:0;position:relative;overflow:hidden;text-align:center;color:var(--ivory);border:1px solid var(--gold);
     background:linear-gradient(170deg,#1b362e,#0f1d19 72%);box-shadow:0 30px 70px rgba(0,0,0,.65);animation:pass-in 1s cubic-bezier(.2,1.1,.3,1);transform-origin:50% 0;}
   @keyframes pass-in{from{opacity:0;transform:translateY(-40px) rotateX(55deg);}to{opacity:1;transform:none;}}
   .pass > *{position:relative;z-index:1;}
-  .pass .pat{position:absolute;inset:0;background-image:var(--pattern);opacity:1;z-index:0;}
+  .pass .pat{position:absolute;inset:0;background-image:var(--pattern);z-index:0;}
   .pass .frame{position:absolute;inset:7px;border:1px solid rgba(201,163,91,.35);z-index:0;pointer-events:none;}
   .pass .shine{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,241,196,.16) 50%,transparent 65%);transform:translateX(-120%);animation:shine 4.5s ease 1s infinite;}
   @keyframes shine{0%{transform:translateX(-120%);}45%,100%{transform:translateX(120%);}}
-  .pass-top{padding:28px 20px 6px;}
-  .pass-kicker,.pass-lbl,.pass-no{font-family:var(--f-caps);text-transform:uppercase;letter-spacing:.2em;color:var(--gold);font-weight:500;}
+  .pass-top{padding:18px 20px 0;display:flex;flex-direction:column;align-items:center;gap:2px;}
+  .pass-kicker,.pass-lbl,.pass-no{font-family:var(--f-caps);text-transform:uppercase;letter-spacing:.18em;color:var(--gold);font-weight:500;line-height:1.4;}
   .pass-kicker{font-size:11px;}
-  .pass-lbl{font-size:10px;margin-bottom:2px;}
+  .pass-lbl{font-size:10px;margin-bottom:4px;}
   html[lang="ar"] .pass-kicker,html[lang="ar"] .pass-lbl,html[lang="ar"] .pass-no{letter-spacing:0;font-size:13px;}
-  .pass-mono{font-family:'Pinyon Script',cursive;font-size:62px;line-height:1.25;}
-  .pass-sub{font-style:italic;color:var(--ivory-soft);font-size:16px;}
+  .pass-mono{font-family:'Pinyon Script',cursive;font-size:44px;line-height:1.9;padding:0 .3em;margin:-.42em 0 -.36em;}
+  .pass-sub{font-style:italic;color:var(--ivory-soft);font-size:15px;line-height:1.4;}
   html[lang="ar"] .pass-sub{font-style:normal;}
-  .pass-guest{padding:16px 20px 24px;}
-  .pass-name{font-family:var(--f-names);font-size:clamp(34px,10vw,42px);line-height:1.3;color:var(--gold-hi);overflow-wrap:anywhere;}
-  .pass-side{font-size:17px;color:var(--ivory);}
-  .pass-perf{height:0;border-top:1px dashed rgba(201,163,91,.55);margin:0 22px;}
-  .pass-notch{position:absolute;width:26px;height:26px;border-radius:50%;background:#060c0b;border:1px solid var(--gold);z-index:3;}
-  .pass-bottom{padding:22px 20px 24px;display:flex;flex-direction:column;align-items:center;gap:16px;}
-  .pass-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;}
-  .pass-grid > div{min-width:0;}
-  .pass-val{font-size:18px;color:var(--ivory);line-height:1.35;}
-  .pass-val2{font-size:15px;color:var(--ivory-soft);}
-  .pass-qr{background:var(--paper);padding:9px;width:128px;height:128px;}
+  .pass-guest{padding:12px 20px 16px;display:flex;flex-direction:column;align-items:center;gap:2px;}
+  .pass-name{font-family:var(--f-names);font-size:clamp(30px,9vw,36px);line-height:1.25;color:var(--gold-hi);overflow-wrap:anywhere;}
+  .pass-name.latin{font-family:'Pinyon Script',cursive;font-size:clamp(32px,9.5vw,40px);}
+  .pass-side{font-size:16px;color:var(--ivory);line-height:1.4;}
+  .pass-perf{height:0;border-top:1px dashed rgba(201,163,91,.55);margin:0 24px;}
+  .pass-notch{position:absolute;width:24px;height:24px;border-radius:50%;background:#060c0b;border:1px solid var(--gold);z-index:3;}
+  .pass-bottom{padding:16px 20px 18px;display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .pass-grid{display:grid;grid-template-columns:1fr 1px 1fr;align-items:center;gap:14px;width:100%;}
+  .pass-grid > div{min-width:0;display:flex;flex-direction:column;align-items:center;}
+  .pass-div{width:1px;align-self:stretch;background:linear-gradient(180deg,transparent,rgba(201,163,91,.6),transparent);}
+  .pass-val{font-size:16px;color:var(--ivory);line-height:1.35;}
+  .pass-val2{font-size:14px;color:var(--ivory-soft);line-height:1.4;}
+  .pass-qr{background:var(--paper);padding:7px;width:96px;height:96px;flex-shrink:0;}
   .pass-qr svg{width:100%;height:100%;display:block;}
-  .pass-no{font-size:11px;color:var(--ivory-soft);}
+  .pass-no{font-size:10px;color:var(--ivory-soft);}
   .pass-note,.pass-actions{flex-shrink:0;}
-  .pass-note{color:var(--ivory-soft);font-size:16px;text-align:center;margin:0;max-width:330px;line-height:1.5;}
+  .pass-note{color:var(--ivory-soft);font-size:15px;text-align:center;margin:0;max-width:330px;line-height:1.55;}
   .pass-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
-  .pass-wrap .modal-close{position:sticky;top:0;align-self:flex-end;color:var(--ivory-soft);margin-bottom:-44px;z-index:5;}
+  .pass-actions .btn{padding:10px 18px;}
   .show-pass{margin-top:24px;}
   @media (prefers-reduced-motion: reduce){.pass,.pass .shine{animation:none;}}
 </style>
@@ -669,7 +674,7 @@
 
 <div class="modal-overlay" id="pass-modal" role="dialog" aria-modal="true" aria-label="Invitation pass" hidden>
   <div class="pass-wrap">
-    <button class="modal-close" type="button" data-close aria-label="Close">&times;</button>
+    <div class="pass-bar"><button class="pass-x glass" type="button" data-close aria-label="Close">&times;</button></div>
     <div class="pass" id="pass">
       <div class="pat"></div><div class="frame"></div><div class="shine"></div>
       <div class="pass-top">
@@ -686,6 +691,7 @@
       <div class="pass-bottom">
         <div class="pass-grid">
           <div><div class="pass-lbl" data-i18n="when">When</div><div class="pass-val" data-i18n="passDate">Monday, 7 Dec 2026</div><div class="pass-val2" data-i18n="passTime">7:00 PM</div></div>
+          <span class="pass-div" aria-hidden="true"></span>
           <div><div class="pass-lbl" data-i18n="where">Where</div><div class="pass-val" data-i18n="venueName">Luna Venue</div><div class="pass-val2" data-i18n="passCity">Cairo</div></div>
         </div>
         <div class="pass-qr" id="pass-qr" hidden></div>
@@ -1272,6 +1278,7 @@
   function showPass(rec, fresh){
     currentPass = rec;
     $('pass-name').textContent = rec.name;
+    $('pass-name').classList.toggle('latin', /^[\x00-\x7F\u00C0-\u024F\s'.-]+$/.test(rec.name));
     $('pass-side').textContent = rec.side === 'bride' ? t('passSideBride') : t('passSideGroom');
     $('pass-no').textContent = t('passNo', {n: digits(passNumber(rec.name))});
     var qr = makeQR(passLink(rec.name)), box = $('pass-qr');
@@ -1286,8 +1293,8 @@
   function placeNotches(){
     var pass = $('pass'), perf = $('pass-perf');
     pass.querySelectorAll('.pass-notch').forEach(function(n){ n.remove(); });
-    var y = perf.offsetTop - 13;
-    ['left','right'].forEach(function(sd){ var n = document.createElement('span'); n.className = 'pass-notch'; n.style.top = y + 'px'; n.style[sd] = '-14px'; pass.appendChild(n); });
+    var y = perf.offsetTop - 12;
+    ['left','right'].forEach(function(sd){ var n = document.createElement('span'); n.className = 'pass-notch'; n.style.top = y + 'px'; n.style[sd] = '-13px'; pass.appendChild(n); });
   }
   $('save-pass').addEventListener('click', function(){
     if (!currentPass || !downloadsCap) return;
