@@ -1226,7 +1226,7 @@
   function formUrl(rec){
     // Opens the form with the answers already filled in; the guest taps Submit (Google's supported pre-fill).
     var f = CONFIG.form, base = f.url.split('?')[0].replace(/\/(viewform|formResponse)\/?$/, '') + '/viewform';
-    var q = new URLSearchParams(); q.set('usp', 'pp_url'); q.set(f.nameEntry, rec.name); q.set(f.sideEntry, rec.side === 'bride' ? f.brideValue : f.groomValue);
+    var q = new URLSearchParams(); q.set('usp', 'pp_url'); q.set(f.nameEntry, rec.name); q.set(f.sideEntry, rec.side === 'bride' ? f.brideValue : f.groomValue); q.set('pageHistory', '0,1');
     return base + '?' + q.toString();
   }
   function waUrl(rec){
@@ -1238,6 +1238,7 @@
   function sendToSheet(rec){
     var f = CONFIG.form, url = f.url.split('?')[0].replace(/\/(viewform|formResponse)\/?$/, '') + '/formResponse';
     var body = new URLSearchParams(); body.set(f.nameEntry, rec.name); body.set(f.sideEntry, rec.side === 'bride' ? f.brideValue : f.groomValue);
+    body.set('pageHistory', '0,1'); // the form's questions sit on its second section
     try {
       fetch(url, {method: 'POST', mode: 'no-cors', body: body}).catch(function(){ openLink(formUrl(rec)); });
     } catch(e){ openLink(formUrl(rec)); }
