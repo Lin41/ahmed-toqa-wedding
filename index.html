@@ -480,6 +480,21 @@
   #gate .env-stage,#gate .gate-hint{transition:opacity .7s ease .15s;}
   #gate:not(.choosing) .lang-step{opacity:0;transform:scale(.97);pointer-events:none;}
   html.picking .lang-toggle{opacity:0;pointer-events:none;}
+  /* ---------- Journey: scroll first, confirm at the end ---------- */
+  .scroll-hint{margin-top:30px;background:none;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--ivory-soft);
+    font-family:var(--f-body);font-style:italic;font-size:18px;letter-spacing:.02em;}
+  html[lang="ar"] .scroll-hint{font-style:normal;font-size:17px;}
+  .sh-line{position:relative;width:1px;height:46px;background:linear-gradient(180deg,rgba(201,163,91,.6),rgba(201,163,91,0));overflow:hidden;}
+  .sh-line::after{content:"";position:absolute;left:-1.5px;top:-8px;width:4px;height:8px;border-radius:2px;background:var(--gold-hi);box-shadow:0 0 8px var(--gold-hi);animation:sh-drop 2.2s cubic-bezier(.6,0,.4,1) infinite;}
+  @keyframes sh-drop{0%{top:-8px;opacity:0;}20%{opacity:1;}100%{top:46px;opacity:0;}}
+  .hero{padding-bottom:70px;}
+  .reply-links{margin-top:22px;display:flex;justify-content:center;}
+  .share-link{display:inline-flex;align-items:center;gap:8px;background:none;border:0;border-bottom:1px solid rgba(201,163,91,.4);padding:4px 2px;cursor:pointer;
+    color:var(--ivory-soft);font-family:var(--f-body);font-style:italic;font-size:17px;}
+  html[lang="ar"] .share-link{font-style:normal;}
+  .share-link svg{width:15px;height:15px;color:var(--gold);}
+  .share-link:hover{color:var(--gold-hi);border-color:var(--gold-hi);}
+  @media (prefers-reduced-motion: reduce){.sh-line::after{animation:none;top:18px;opacity:1;}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -585,14 +600,8 @@
       </div>
       <div class="cd-today foil" id="cd-today" hidden></div>
     </div>
-    <div class="hero-actions reveal d3">
-      <button class="btn solid" type="button" data-open-rsvp><span data-i18n="rsvpLong">Reply to the invitation</span></button>
-      <button class="btn" type="button" id="share-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>
-        <span data-i18n="share">Share</span>
-      </button>
-    </div>
-    <button class="scroll-cue" id="scroll-cue" type="button" aria-label="Scroll down"></button>
+    <button class="scroll-hint reveal d3" id="scroll-cue" type="button"><span data-i18n="scrollHint">Scroll to read our letter</span><span class="sh-line" aria-hidden="true"></span></button>
+
   </section>
 
   <section class="section" id="verse">
@@ -691,6 +700,7 @@
         <svg class="seal-big wax" viewBox="0 0 100 100" aria-hidden="true"></svg>
         <span class="t" data-i18n="replyCta">Tap the seal to reply</span>
       </button>
+      <div class="reply-links"><button class="share-link" type="button" id="share-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg><span data-i18n="share">Share</span></button></div>
       <div><button class="btn show-pass" type="button" id="show-pass" hidden><span data-i18n="showPass">Show my invitation pass</span></button></div>
     </div>
   </section>
@@ -797,7 +807,7 @@
       inviteLine:"With hearts full of joy, we invite you to celebrate our wedding",
       namesA:"Ahmed", namesAmp:" & ", namesB:"Toqa", namesAria:"Ahmed and Toqa",
       dMonth:"December", dYear:"2026", dWeekday:"Monday", dTime:"7 PM", venueShort:"Luna Venue, Cairo",
-      scratchHint:"Scratch to know the date", scratchSkip:"Reveal the date",
+      scratchHint:"Scratch to know the date", scrollHint:"Scroll to read our letter", scratchSkip:"Reveal the date",
       days:"Days", hours:"Hours", mins:"Minutes", secs:"Seconds",
       today:"Today is the day", after:"Thank you for celebrating with us",
       rsvpShort:"RSVP", rsvpLong:"Confirm your attendance", share:"Share",
@@ -850,7 +860,7 @@
       inviteLine:"Kalbimiz sevinçle dolu, sizi düğünümüze davet ediyoruz",
       namesA:"Ahmed", namesAmp:" & ", namesB:"Toqa", namesAria:"Ahmed ve Toqa",
       dMonth:"Aralık", dYear:"2026", dWeekday:"Pazartesi", dTime:"19.00", venueShort:"Luna Venue, Kahire",
-      scratchHint:"Tarihi öğrenmek için kazıyın", scratchSkip:"Tarihi göster",
+      scratchHint:"Tarihi öğrenmek için kazıyın", scrollHint:"Mektubumuzu okumak için kaydırın", scratchSkip:"Tarihi göster",
       days:"Gün", hours:"Saat", mins:"Dakika", secs:"Saniye",
       today:"Bugün o gün", after:"Bizimle kutladığınız için teşekkürler",
       rsvpShort:"Katılım", rsvpLong:"Katılımınızı onaylayın", share:"Paylaş",
@@ -903,10 +913,10 @@
       inviteLine:"بكل الفرحة اللي في قلوبنا، بنعزمك على فرحنا",
       namesA:"أحمد", namesAmp:" و ", namesB:"تقى", namesAria:"أحمد وتقى",
       dMonth:"ديسمبر", dYear:"٢٠٢٦", dWeekday:"الإتنين", dTime:"٧ بالليل", venueShort:"قاعة لونا، القاهرة",
-      scratchHint:"امسح هنا شوف الميعاد", scratchSkip:"اظهر الميعاد",
+      scratchHint:"امسح هنا شوف الميعاد", scrollHint:"انزل لتحت واقرا جوابنا", scratchSkip:"اظهر الميعاد",
       days:"يوم", hours:"ساعة", mins:"دقيقة", secs:"ثانية",
       today:"النهارده الفرح", after:"شكرًا إنكم فرّحتونا",
-      rsvpShort:"أكّد حضورك", rsvpLong:"أكّد حضورك", share:"شارك الدعوة",
+      rsvpShort:"أكّد حضورك", rsvpLong:"أكّد حضورك", share:"شارك الدعوة مع حد بتحبه",
       ayahRef:"سورة الروم · آية ٢١", ayahTr:"",
       v1:"قلبين", v2:"وقدر واحد", v3:"إني رُزقت حبها",
       dear:"حبايبنا الغاليين،", dearName:"إلى {name}،",
@@ -1192,7 +1202,8 @@
       fill.style.height = len + 'px';
       items.forEach(function(it){ var y = it.offsetTop + 39; it.classList.toggle('lit', len >= y); });
       var heroBottom = $('hero').getBoundingClientRect().bottom, replyTop = $('reply').getBoundingClientRect().top;
-      $('rsvp-fab').classList.toggle('show', heroBottom < 0 && replyTop > vh*0.8);
+      var promiseTop = $('promise').getBoundingClientRect().top;
+      $('rsvp-fab').classList.toggle('show', promiseTop < vh*0.5 && replyTop > vh*0.8);
       ticking = false;
     });
   }
