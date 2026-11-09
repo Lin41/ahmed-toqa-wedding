@@ -536,7 +536,7 @@
       <div class="env-card">
         <span class="small" data-i18n="cardSmall">You are invited</span>
         <span class="mono">Ahmed &amp; Toqa</span>
-        <span class="small">07 · 12 · 2026</span>
+        <span class="small" dir="ltr">07 · 12 · 2026</span>
       </div>
       <div class="env-front"></div>
       <div class="env-to"><span class="lbl" data-i18n="envTo">Kindly delivered to</span><span class="nm" id="env-name">Our dearest friend</span></div>
@@ -711,7 +711,7 @@
   <div class="dua" lang="ar">بارك الله لكما، وبارك عليكما، وجمع بينكما في خير</div>
   <div class="dua-tr" id="dua-tr" data-i18n="duaTr">May Allah bless you both, shower His blessings upon you, and unite you in goodness.</div>
   <div class="mono foil">A &amp; T</div>
-  <div class="fdate">07 · 12 · 2026</div>
+  <div class="fdate" dir="ltr">07 · 12 · 2026</div>
 </footer>
 
 <div class="modal-overlay" id="rsvp-modal" role="dialog" aria-modal="true" aria-labelledby="rsvp-title" hidden>
@@ -1098,13 +1098,15 @@
   /* ---------- Typewriter letter ---------- */
   var twLines = Array.prototype.slice.call(document.querySelectorAll('.tw'));
   twLines.forEach(function(el){ el._state = 'idle'; });
-  function finishLine(el){ if (el._timer) clearInterval(el._timer); el._timer = null; el.textContent = t(el.getAttribute('data-key')); el._state = 'done'; }
+  function finishLine(el){ if (el._timer) clearInterval(el._timer); el._timer = null; el.textContent = t(el.getAttribute('data-key')); el.style.minHeight = ''; el._state = 'done'; }
   // Types into ONE text node (word by word for Arabic) so letters always stay joined.
   function typeLine(el){
     if (reduceMotion) return finishLine(el);
     var text = t(el.getAttribute('data-key')), ar = lang === 'ar';
     var steps = ar ? text.split(/(\s+)/) : text.split('');
     var i = 0, shown = '';
+    // reserve the paragraph's final height first, so the page never shifts while it types
+    el.style.minHeight = ''; el.textContent = text; el.style.minHeight = el.offsetHeight + 'px';
     el.textContent = ''; el._state = 'typing';
     var node = document.createTextNode(''), cur = document.createElement('span');
     cur.className = 'cursor'; el.appendChild(node); el.appendChild(cur);
@@ -1122,7 +1124,7 @@
     document.querySelectorAll('[data-i18n-ph]').forEach(function(el){ el.placeholder = t(el.getAttribute('data-i18n-ph')); });
     $('ayah-tr').hidden = lang === 'ar'; $('dua-tr').hidden = lang === 'ar';
     $('day-num').textContent = digits('07');
-    $('letter-head').textContent = guestName ? t('dearName',{name:guestName}) : t('dear');
+    $('letter-head').textContent = guestName ? t('dearName',{name:'\u2068' + guestName + '\u2069'}) : t('dear');
     $('env-name').textContent = guestName || t('envDefault');
     document.querySelectorAll('.lang-toggle button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang)); });
     twLines.forEach(function(el){ if (el._state !== 'idle') finishLine(el); });
@@ -1207,12 +1209,18 @@
       ticking = false;
     });
   }
-  var lastY = 0;
+  // Floating controls hide while reading down and return on any scroll up (even a slow one)
+  var anchorY = 0, uiHidden = false;
   window.addEventListener('scroll', function(){
     var y = window.scrollY;
-    if (y < 140 || y < lastY - 6) document.body.classList.remove('ui-hide');
-    else if (y > lastY + 6) document.body.classList.add('ui-hide');
-    lastY = y;
+    if (y < 140) { if (uiHidden) { uiHidden = false; document.body.classList.remove('ui-hide'); } anchorY = y; return; }
+    if (uiHidden) {
+      if (y > anchorY) anchorY = y;
+      else if (anchorY - y > 24) { uiHidden = false; document.body.classList.remove('ui-hide'); anchorY = y; }
+    } else {
+      if (y < anchorY) anchorY = y;
+      else if (y - anchorY > 24) { uiHidden = true; document.body.classList.add('ui-hide'); anchorY = y; }
+    }
   }, {passive:true});
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('resize', onScroll); onScroll();
 
@@ -1421,7 +1429,7 @@
   /* ---------- Scratch to reveal the date ---------- */
   (function(){
     var box = $('scratch'), cv = $('scratch-cv'), ctx = cv.getContext('2d'), done = false, moves = 0, last = null, dpr = Math.min(window.devicePixelRatio || 1, 2);
-    if (store('at-scratched') === '1') { cv.classList.add('gone'); done = true; return; }
+    // The gold foil appears on every visit, so the guest always gets the scratch moment
     function paint(){
       if (done) return;
       var w = box.offsetWidth, h = box.offsetHeight; if (!w || !h) return;
@@ -1455,7 +1463,7 @@
       for (var i = 3; i < d.length; i += 64) { n++; if (d[i] < 40) clear++; }
       if (clear / n > .45) reveal();
     }
-    function reveal(){ if (done) return; done = true; cv.classList.add('gone'); store('at-scratched', '1'); petals(); }
+    function reveal(){ if (done) return; done = true; cv.classList.add('gone'); petals(); }
     var down = false;
     cv.addEventListener('pointerdown', function(e){ down = true; last = null; try { cv.setPointerCapture(e.pointerId); } catch(x){} erase(pos(e)); });
     cv.addEventListener('pointermove', function(e){ if (down) erase(pos(e)); });
